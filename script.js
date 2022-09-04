@@ -2,9 +2,8 @@ var playerOneD = document.getElementById("player-1");
 var playerTwoD = document.getElementById("player-2");
 var start = document.getElementById("start");
 var final = document.getElementById("gameE");
-
 const displayModule = (function () {
-  var arr = [];
+  let arr = [];
   var container = document.createElement("div");
   const gamebord = function () {
     container.classList.add("board");
@@ -16,6 +15,18 @@ const displayModule = (function () {
       for (j = 1; j <= 3; j++) {
         var cell = document.createElement("div");
         cell.classList.add("cell");
+        cell.dataset.row = i;
+        cell.dataset.column = j;
+        if (cell.dataset.row == cell.dataset.column) {
+          cell.dataset.diagonal = "mainDiagonal";
+        }
+        if (
+          (cell.dataset.row == 1 && cell.dataset.column == 3) ||
+          (cell.dataset.row == 2 && cell.dataset.column == 2) ||
+          (cell.dataset.row == 3 && cell.dataset.column == 1)
+        ) {
+          cell.dataset.diagonalRev = "reverseDiagonal";
+        }
 
         container.appendChild(cell);
         arr.push(cell);
@@ -41,150 +52,98 @@ const displayModule = (function () {
       });
     });
   };
-console.log(arr)
-  return { gamebord, arr, container };
+  return { gamebord, arr, container, displyMark };
 })();
-
-function namee(params, cont, playerOneName, playerTwoName) {
-  params.forEach((element) => {
-    element.addEventListener("click", function () {
-      if (
-        params[0].innerText == "X" &&
-        params[1].innerText == "X" &&
-        params[2].innerText == "X"
-      ) {
-        cont.style.display = "none";
-
-        final.innerText = `winner is ${playerOneName}`;
-      } else if (
-        params[3].innerText == "X" &&
-        params[4].innerText == "X" &&
-        params[5].innerText == "X"
-      ) {
-        cont.style.display = "none";
-        final.innerText = `winner is ${playerOneName}`;
-      } else if (
-        params[6].innerText == "X" &&
-        params[7].innerText == "X" &&
-        params[8].innerText == "X"
-      ) {
-        cont.style.display = "none";
-        final.innerText = `winner is ${playerOneName}`;
-      } else if (
-        params[0].innerText == "X" &&
-        params[3].innerText == "X" &&
-        params[6].innerText == "X"
-      ) {
-        cont.style.display = "none";
-        final.innerText = `winner is ${playerOneName}`;
-      } else if (
-        params[1].innerText == "X" &&
-        params[4].innerText == "X" &&
-        params[7].innerText == "X"
-      ) {
-        cont.style.display = "none";
-        final.innerText = `winner is ${playerOneName}`;
-      } else if (
-        params[2].innerText == "X" &&
-        params[5].innerText == "X" &&
-        params[8].innerText == "X"
-      ) {
-        cont.style.display = "none";
-        final.innerText = `winner is ${playerOneName}`;
-      } else if (params[4].innerText == "X" && params[8].innerText == "X") {
-        cont.style.display = "none";
-        final.innerText = `winner is ${playerOneName}`;
-      } else if (
-        params[2].innerText == "X" &&
-        params[4].innerText == "X" &&
-        params[6].innerText == "X"
-      ) {
-        cont.style.display = "none";
-        final.innerText = `winner is ${playerOneName}`;
-      } else if (
-        params[0].innerText == "O" &&
-        params[1].innerText == "O" &&
-        params[2].innerText == "O"
-      ) {
-        cont.style.display = "none";
-        final.innerText = `winner is ${playerTwoName}`;
-      } else if (
-        params[3].innerText == "O" &&
-        params[4].innerText == "O" &&
-        params[5].innerText == "O"
-      ) {
-        cont.style.display = "none";
-        final.innerText = `winner is ${playerTwoName}`;
-      } else if (
-        params[6].innerText == "O" &&
-        params[7].innerText == "O" &&
-        params[8].innerText == "O"
-      ) {
-        cont.style.display = "none";
-        final.innerText = `winner is ${playerTwoName}`;
-      } else if (
-        params[0].innerText == "O" &&
-        params[3].innerText == "O" &&
-        params[6].innerText == "O"
-      ) {
-        cont.style.display = "none";
-        final.innerText = `winner is ${playerTwoName}`;
-      } else if (
-        params[1].innerText == "O" &&
-        params[4].innerText == "O" &&
-        params[7].innerText == "O"
-      ) {
-        cont.style.display = "none";
-        final.innerText =`winner is ${playerTwoName}`
-      } else if (
-        params[2].innerText == "O" &&
-        params[5].innerText == "O" &&
-        params[8].innerText == "O"
-      ) {
-        cont.style.display = "none";
-        final.innerText = `winner is ${playerTwoName}`;
-      } else if (
-        params[0].innerText == "O" &&
-        params[4].innerText == "O" &&
-        params[8].innerText == "O"
-      ) {
-        cont.style.display = "none";
-        final.innerText = `winner is ${playerTwoName}`;
-      } else if (
-        params[2].innerText == "O" &&
-        params[4].innerText == "O" &&
-        params[6].innerText == "O"
-      ) {
-        cont.style.display = "none";
-        final.innerText = `winner is${playerTwoName}`;
-      } else {
-        let x = params.every(function (item) {
-          return item.innerText == "X" || item.innerText == "O";
-        });
-        if (x) {
-          cont.style.display = "none";
-          final.innerText='tie'
-        }
-      }
-    });
-  });
-}
 var startGame = function () {
   start.addEventListener("click", function (e) {
-    var playerOneName = playerOneD.value;
-    var playerTWoName = playerTwoD.value;
+    e.preventDefault();
+    var playerOne = playerOneD.value;
+    var playerTwo = playerTwoD.value;
+    console.log(playerOne);
 
     displayModule.gamebord();
-    namee(
-      displayModule.arr,
-      displayModule.container,
-      playerOneName,
-      playerTWoName
-    );
-
-    e.preventDefault();
-    e.target.parentNode.remove();
+    checkwinner(displayModule.container, playerOne, playerTwo);
+    e.target.parentNode.style.display='none';
   });
 };
-
 startGame();
+
+function checkwinner(cont, p1name, p2name) {
+  var rowOne = document.querySelectorAll(`div[data-row="1"]`);
+  var rowTwo = document.querySelectorAll(`div[data-row="2"]`);
+  var rowThree = document.querySelectorAll(`div[data-row="3"]`);
+  var columnOne = document.querySelectorAll(`div[data-column="1"]`);
+  var columnTwo = document.querySelectorAll(`div[data-column="2"]`);
+  var columnThree = document.querySelectorAll(`div[data-column="3"]`);
+  var cells = document.getElementsByClassName("cell");
+  var mainDiagonal = document.querySelectorAll(
+    `div[data-diagonal="mainDiagonal"]`
+  );
+  var reverseDiagonal = document.querySelectorAll(
+    `div[data-diagonal-rev="reverseDiagonal"]`
+  );
+  var cellsArray = Array.from(cells);
+  var rowOneArray = Array.from(rowOne);
+  var rowTwoArray = Array.from(rowTwo);
+  var rowThreeArray = Array.from(rowThree);
+  var columnOneArray = Array.from(columnOne);
+  var columnTwoArray = Array.from(columnTwo);
+  var columnThreeArray = Array.from(columnThree);
+  var mainDiagonalArray = Array.from(mainDiagonal);
+  var reverseDiagonalArray = Array.from(reverseDiagonal);
+  var wincondition = [
+    rowOneArray,
+    rowTwoArray,
+    rowThreeArray,
+    columnOneArray,
+    columnTwoArray,
+    columnThreeArray,
+    mainDiagonalArray,
+    reverseDiagonalArray,
+  ];
+  cont.addEventListener("click", function () {
+    let r = wincondition.some(function (item) {
+      var check = item.every(function (items) {
+        return items.innerText == "X";
+      });
+      return check;
+    });
+    let c = wincondition.some(function (item) {
+      var check = item.every(function (items) {
+        return items.innerText == "O";
+      });
+      return check;
+    });
+    let z = cellsArray.every(function (item) {
+      return item.innerText == "X" || item.innerText == "O";
+    });
+
+    if (c) {
+      cont.style.display = "none";
+      final.innerText = `winner is ${p1name}`;
+
+      Restart();
+    }
+    if (r) {
+      cont.style.display = "none";
+      final.innerText = `winner is ${p2name}`;
+      Restart();
+    }
+
+    if (c == false && r == false && z) {
+      cont.style.display = "none";
+      final.innerText = "draw";
+      Restart();
+    }
+  });
+}
+function Restart() {
+  let restart = document.createElement("button");
+  document.body.appendChild(restart);
+  restart.innerText = "play again";
+  restart.classList.add("restart-button");
+  restart.addEventListener("click", function (e) {
+    window.location.reload();
+    e.target.style.display = "none";
+  });
+}
